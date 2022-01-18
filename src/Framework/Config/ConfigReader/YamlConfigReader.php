@@ -16,13 +16,16 @@ final class YamlConfigReader implements ConfigReaderInterface
         return 'yaml' === $extension || 'yml' === $extension;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public function read(string $absolutePath): array
     {
         if (!file_exists($absolutePath)) {
             return [];
         }
 
-        /** @var null|array $content */
+        /** @var null|array<string,mixed> $content */
         $content = Yaml::parseFile($absolutePath);
 
         return is_array($content) ? $content : [];
