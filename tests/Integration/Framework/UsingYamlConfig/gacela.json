@@ -1,7 +1,0 @@
-{
-  "config": {
-    "type": "yaml",
-    "path": "config/*.{yaml,yml}",
-    "path_local": "config/local.yaml"
-  }
-}
