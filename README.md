@@ -8,40 +8,22 @@ composer require gacela-project/gacela-yaml-config-reader
 
 ## Setup
 
-You must define in the `Gacela::bootstrap()` the configuration for the `yaml`/`yml` files.
-
-- The first parameter refers to the `$rootAppDir`
-- The second parameter refers to the `$globalServices`, you can define the settings in an external `gacela.php` file 
-  (recommended way) or inline
-- The third parameter refers to the `$configReaders`, the key should match with the `$globalServices['config']['type']`,
-  additionally, the parameter is an array because you can define more than one reader
+You can define the reader configuration either in the `Gacela::bootstrap()` or in a `gacela.php` file.
 
 ### Option A)
 
-Define the `ConfigReader` in your bootstrap
-
-```php
-use Gacela\Framework\Config\ConfigReader\YamlConfigReader;
-
-Gacela::bootstrap(__DIR__, [], ['yaml' => new YamlConfigReader()]);
-```
-
-And set the configuration in a `gacela.php` file in the root of your project:
+Define the configuration in a `gacela.php` file in the root of your project (recommended way):
 
 ```php
 <?php # gacela.php
-use Gacela\Framework\AbstractConfigGacela;
 
-return static fn () => new class() extends AbstractConfigGacela {
-    public function config(): array
+return fn () => new class() extends AbstractConfigGacela 
+{
+    public function config(ConfigBuilder $configBuilder): void
     {
-        return [
-            'type' => 'yaml',
-            'path' => 'config/*.{yaml,yml}',
-            'path_local' => 'config/local.yaml',
-        ];
+        $configBuilder->add(YamlConfigReader::class, 'config/*.{yaml,yml}', 'config/local.yaml');
     }
-};
+}
 ```
 
 ### Option B)
@@ -49,48 +31,22 @@ return static fn () => new class() extends AbstractConfigGacela {
 Define all configuration on the fly in the bootstrap itself.
 
 ```php
-use Gacela\Framework\Config\ConfigReader\YamlConfigReader;
+<?php  # public/index.php
 
-Gacela::bootstrap(
-    __DIR__,
-    [
-        'config' => [
-            [
-                'type' => 'yaml',
-                'path' => 'config/*.{yaml,yml}',
-                'path_local' => 'config/local.yaml',
-            ],
-        ],
-    ],
-    ['yaml' => new YamlConfigReader()]
-);
+Gacela::bootstrap($appRootDir, [
+    'config' => function (ConfigBuilder $configBuilder): void {
+        $configBuilder->add(YamlConfigReader::class, 'config/*.{yaml,yml}', 'config/local.yaml');
+    }
+]);
 ```
 
 ### You can define more than one `ConfigReader` at once.
 
 ```php
-use Gacela\Framework\Config\ConfigReader\PhpConfigReader;
-use Gacela\Framework\Config\ConfigReader\YamlConfigReader;
-
-$globalServices = [
-    'config' => [
-        [
-            'type' => 'php',
-            'path' => 'config/*.php',
-            'path_local' => 'config/local.php',
-        ],
-        [
-            'type' => 'yaml',
-            'path' => 'config/*.{yaml,yml}',
-            'path_local' => 'config/local.yaml',
-        ],
-    ],
-];
-
-$configReaders = [
-    'php' => new PhpConfigReader(),
-    'yaml' => new YamlConfigReader(),
-];
-
-Gacela::bootstrap(__DIR__, $globalServices, $configReaders);
+Gacela::bootstrap($appRootDir, [
+    'config' => function (ConfigBuilder $configBuilder): void {
+        $configBuilder->add(PhpConfigReader::class, 'config/*.php', 'config/local.php');
+        $configBuilder->add(YamlConfigReader::class, 'config/*.{yaml,yml}', 'config/local.yaml.dist');
+    }
+]);
 ```
