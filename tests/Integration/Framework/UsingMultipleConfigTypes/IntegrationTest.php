@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace GacelaTest\Integration\Framework\UsingMultipleConfigTypes;
 
-use Gacela\Framework\Config\ConfigReader\PhpConfigReader;
-use Gacela\Framework\Config\ConfigReader\YamlConfigReader;
 use Gacela\Framework\Gacela;
 use PHPUnit\Framework\TestCase;
 
@@ -13,13 +11,7 @@ final class IntegrationTest extends TestCase
 {
     public function setUp(): void
     {
-        $configReaders = [
-            'php' => new PhpConfigReader(),
-            'yaml' => new YamlConfigReader(),
-            'yml' => new YamlConfigReader(),
-        ];
-
-        Gacela::bootstrap(__DIR__, [], $configReaders);
+        Gacela::bootstrap(__DIR__);
     }
 
     public function test_read_config_values_php_yaml_yml(): void

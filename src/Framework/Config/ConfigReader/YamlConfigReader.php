@@ -9,19 +9,12 @@ use Symfony\Component\Yaml\Yaml;
 
 final class YamlConfigReader implements ConfigReaderInterface
 {
-    public function canRead(string $absolutePath): bool
-    {
-        $extension = pathinfo($absolutePath, PATHINFO_EXTENSION);
-
-        return 'yaml' === $extension || 'yml' === $extension;
-    }
-
     /**
      * @return array<string,mixed>
      */
     public function read(string $absolutePath): array
     {
-        if (!file_exists($absolutePath)) {
+        if (!$this->canRead($absolutePath)) {
             return [];
         }
 
@@ -29,5 +22,13 @@ final class YamlConfigReader implements ConfigReaderInterface
         $content = Yaml::parseFile($absolutePath);
 
         return is_array($content) ? $content : [];
+    }
+
+    private function canRead(string $absolutePath): bool
+    {
+        $extension = pathinfo($absolutePath, PATHINFO_EXTENSION);
+
+        return ('yaml' === $extension || 'yml' === $extension)
+            && file_exists($absolutePath);
     }
 }
