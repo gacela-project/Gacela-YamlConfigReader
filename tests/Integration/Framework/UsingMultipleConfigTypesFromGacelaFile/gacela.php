@@ -9,6 +9,7 @@ use Gacela\Framework\Config\GacelaConfigBuilder\ConfigBuilder;
 return static fn () => new class () extends AbstractConfigGacela {
     public function config(ConfigBuilder $configBuilder): void
     {
-        $configBuilder->add(YamlConfigReader::class, 'config/*.{yaml,yml}', 'config/local.yaml');
+        $configBuilder->add('config/*.php');
+        $configBuilder->add('config/*.{yaml,yml}', 'config/local.yaml', YamlConfigReader::class);
     }
 };
