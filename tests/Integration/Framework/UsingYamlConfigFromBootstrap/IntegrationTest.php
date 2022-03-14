@@ -15,7 +15,7 @@ final class IntegrationTest extends TestCase
     {
         Gacela::bootstrap(__DIR__, [
             'config' => static function (ConfigBuilder $configBuilder): void {
-                $configBuilder->add('config/*.{yaml,yml}', '', YamlConfigReader::class);
+                $configBuilder->add('config/*.{yaml,yml}', 'config/local.yaml', YamlConfigReader::class);
             },
         ]);
     }
