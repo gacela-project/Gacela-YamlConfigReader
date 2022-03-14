@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": ">=7.4",
-        "gacela-project/gacela": "dev-master",
+        "gacela-project/gacela": "0.14",
         "symfony/yaml": "^5.4"
     },
     "require-dev": {
