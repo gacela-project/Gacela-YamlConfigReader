@@ -48,7 +48,7 @@ Gacela::bootstrap($appRootDir, [
 
 ```php
 function (ConfigBuilder $configBuilder): void {
-    $configBuilder->add('config/.env*', 'config/.env.local.dist', YamlConfigReader::class);
+    $configBuilder->add('config/*.{yaml,yml}', 'config/local.yaml', YamlConfigReader::class);
     $configBuilder->add('config/*.php', 'config/local.php');
     $configBuilder->add('config/*.custom', '', CustomConfigReader::class);
 }
