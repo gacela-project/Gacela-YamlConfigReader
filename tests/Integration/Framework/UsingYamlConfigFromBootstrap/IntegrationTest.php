@@ -7,17 +7,19 @@ namespace GacelaTest\Integration\Framework\UsingYamlConfigFromBootstrap;
 use Gacela\Framework\Config\ConfigReader\YamlConfigReader;
 use Gacela\Framework\Config\GacelaConfigBuilder\ConfigBuilder;
 use Gacela\Framework\Gacela;
+use Gacela\Framework\Setup\SetupGacela;
 use PHPUnit\Framework\TestCase;
 
 final class IntegrationTest extends TestCase
 {
     public function setUp(): void
     {
-        Gacela::bootstrap(__DIR__, [
-            'config' => static function (ConfigBuilder $configBuilder): void {
+        $setup = (new SetupGacela())
+            ->setConfig(static function (ConfigBuilder $configBuilder): void {
                 $configBuilder->add('config/*.{yaml,yml}', 'config/local.yaml', YamlConfigReader::class);
-            },
-        ]);
+            });
+
+        Gacela::bootstrap(__DIR__, $setup);
     }
 
     public function test_read_config_values_yaml_yml_from_bootstrap(): void
