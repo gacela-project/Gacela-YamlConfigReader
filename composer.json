@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": ">=7.4",
-        "gacela-project/gacela": "^0.15",
+        "gacela-project/gacela": "*",
         "symfony/yaml": "^5.4"
     },
     "require-dev": {
@@ -39,9 +39,6 @@
     "config": {
         "platform": {
             "php": "7.4"
-        },
-        "allow-plugins": {
-            "composer/package-versions-deprecated": false
         }
     },
     "scripts": {
