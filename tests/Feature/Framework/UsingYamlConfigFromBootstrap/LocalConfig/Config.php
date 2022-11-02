@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GacelaTest\Integration\Framework\UsingYamlConfigFromBootstrap\LocalConfig;
+namespace GacelaTest\Feature\Framework\UsingYamlConfigFromBootstrap\LocalConfig;
 
 use Gacela\Framework\AbstractConfig;
 
