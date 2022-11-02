@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Gacela\Framework\Config\ConfigReader;
 
 use Gacela\Framework\Config\ConfigReaderInterface;
+use Gacela\Framework\Event\ConfigReader\ReadYamlConfigEvent;
+use Gacela\Framework\Event\Dispatcher\EventDispatchingCapabilities;
 use Symfony\Component\Yaml\Yaml;
 
 final class YamlConfigReader implements ConfigReaderInterface
 {
+    use EventDispatchingCapabilities;
+
     /**
      * @return array<string,mixed>
      */
@@ -17,6 +21,8 @@ final class YamlConfigReader implements ConfigReaderInterface
         if (!$this->canRead($absolutePath)) {
             return [];
         }
+
+        $this->dispatchEvent(new ReadYamlConfigEvent($absolutePath));
 
         /** @var null|array<string,mixed> $content */
         $content = Yaml::parseFile($absolutePath);
