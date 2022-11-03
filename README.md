@@ -17,12 +17,12 @@ Define the configuration in a `gacela.php` file in the root of your project (rec
 ```php
 <?php # gacela.php
 
+use Gacela\Framework\Bootstrap\GacelaConfig;
 use Gacela\Framework\Config\ConfigReader\YamlConfigReader;
 
-return (new SetupGacela())
-    ->setConfig(static function(ConfigBuilder $configBuilder): void {
-        $configBuilder->add('config/*.{yaml,yml}', 'config/local.yaml', YamlConfigReader::class);
-    });
+return static function (GacelaConfig $config): void {
+    $config->addAppConfig('config/*.{yaml,yml}', 'config/local.yaml', YamlConfigReader::class);
+};
 ```
 
 ### Option B)
@@ -32,12 +32,13 @@ Define all configuration on the fly in the bootstrap itself.
 ```php
 <?php  # public/index.php
 
+use Gacela\Framework\Bootstrap\GacelaConfig;
 use Gacela\Framework\Config\ConfigReader\YamlConfigReader;
+use Gacela\Framework\Gacela;
 
-$setup = (new SetupGacela())
-    ->setConfig(static function(ConfigBuilder $configBuilder): void {
-        $configBuilder->add('config/*.{yaml,yml}', 'config/local.yaml', YamlConfigReader::class);
-    });
+$setup = static function (GacelaConfig $config): void {
+    $config->addAppConfig('config/*.{yaml,yml}', 'config/local.yaml', YamlConfigReader::class);
+};
 
 Gacela::bootstrap($appRootDir, $setup);
 ```
@@ -45,9 +46,9 @@ Gacela::bootstrap($appRootDir, $setup);
 #### You can define more than one `ConfigReader` at once.
 
 ```php
-static function(ConfigBuilder $configBuilder): void {
-    $configBuilder->add('config/*.{yaml,yml}', 'config/local.yaml', YamlConfigReader::class);
-    $configBuilder->add('config/*.php', 'config/local.php');
-    $configBuilder->add('config/*.custom', '', CustomConfigReader::class);
+$setup = static function (GacelaConfig $config): void {
+    $config->addAppConfig('config/*.{yaml,yml}', 'config/local.yaml', YamlConfigReader::class);
+    $config->addAppConfig('config/*.php', 'config/local.php');
+    $config->addAppConfig('config/*.custom', '', CustomConfigReader::class);
 }
 ```
