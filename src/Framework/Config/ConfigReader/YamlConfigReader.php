@@ -22,7 +22,7 @@ final class YamlConfigReader implements ConfigReaderInterface
             return [];
         }
 
-        $this->dispatchEvent(new ReadYamlConfigEvent($absolutePath));
+        self::dispatchEvent(new ReadYamlConfigEvent($absolutePath));
 
         /** @var null|array<string,mixed> $content */
         $content = Yaml::parseFile($absolutePath);
