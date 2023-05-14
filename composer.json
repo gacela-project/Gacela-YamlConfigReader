@@ -21,6 +21,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.13",
+        "infection/infection": "^0.26",
         "phpunit/phpunit": "^9.5",
         "phpstan/phpstan": "^1.9",
         "psalm/plugin-phpunit": "^0.18",
@@ -40,13 +41,17 @@
     "config": {
         "platform": {
             "php": "8.0"
+        },
+        "allow-plugins": {
+            "infection/extension-installer": true
         }
     },
     "scripts": {
         "ctal": [
             "@static-clear-cache",
             "@csfix",
-            "@test-all"
+            "@test-all",
+            "@infection"
         ],
         "test-all": [
             "@quality",
@@ -58,19 +63,18 @@
             "@phpstan"
         ],
         "phpunit": [
-            "@test-unit",
             "@test-feature"
         ],
         "static-clear-cache": [
             "vendor/bin/psalm --clear-cache",
             "vendor/bin/phpstan clear-result-cache"
         ],
-        "test-unit": "./vendor/bin/phpunit --testsuite=unit",
-        "test-feature": "./vendor/bin/phpunit --testsuite=feature",
+        "test-feature": "XDEBUG_MODE=off ./vendor/bin/phpunit --testsuite=feature",
         "test-coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --testsuite=unit,feature --coverage-html=coverage",
-        "psalm": "./vendor/bin/psalm",
-        "phpstan": "./vendor/bin/phpstan analyze -c phpstan.neon src",
-        "csfix": "./vendor/bin/php-cs-fixer fix --allow-risky=yes",
-        "csrun": "./vendor/bin/php-cs-fixer fix --allow-risky=yes --dry-run"
+        "psalm": "XDEBUG_MODE=off ./vendor/bin/psalm",
+        "phpstan": "XDEBUG_MODE=off ./vendor/bin/phpstan analyze -c phpstan.neon src",
+        "csfix": "XDEBUG_MODE=off ./vendor/bin/php-cs-fixer fix --allow-risky=yes",
+        "csrun": "XDEBUG_MODE=off ./vendor/bin/php-cs-fixer fix --allow-risky=yes --dry-run",
+        "infection": "XDEBUG_MODE=coverage ./vendor/bin/infection  --show-mutations --threads=max --min-msi=100 --min-covered-msi=100"
     }
 }
