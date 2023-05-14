@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
+        "php": "^8.0, <8.3",
         "gacela-project/gacela": "*",
         "symfony/yaml": "^5.4"
     },
@@ -39,7 +39,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.4"
+            "php": "8.0"
         }
     },
     "scripts": {
