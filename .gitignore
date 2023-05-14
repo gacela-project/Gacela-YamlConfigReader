@@ -1,7 +1,11 @@
-/coverage/
-/.idea/
-/.vscode/
-/vendor/
-.phpunit.*
-.php-cs-fixer.cache
+.idea/
+.vscode/
+.cache/
+
+coverage/
+data/
+vendor/
+
+*.cache
 composer.lock
+mutation-report.html
